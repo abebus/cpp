@@ -3,7 +3,7 @@
 
 class String{
     friend std::ostream& operator<<(std::ostream&, const String&);
-    friend String& operator+(String);
+    //friend String& operator+(String);
 
     char *content_{nullptr};
     int size_{0};
@@ -35,12 +35,16 @@ public:
         }
     };
     ~String() {
-        delete[] content_;
+        content_ = nullptr;
+        delete content_;
         size_ = 0;
     };
 
     char& operator[](int);
-    String operator+(String);
+
+    String operator+(String right){
+        return this->concatenate(right);
+    };
     String operator+=(String);
     //String& operator=(String);
 
@@ -96,15 +100,12 @@ char& String::operator[](int index) {
     return content_[index];
 }
 
-String String::operator+(String right){
-    return this->concatenate(right);
-}
 
 int main(){
     String teststr("cock", 4);
     String test2("check", 5);
     //String a = teststr + test2;
     std::cout << teststr.concatenate(test2.lower()) << '\n';
-    //std::cout << test2 + teststr;
+    std::cout << test2 + teststr;
     return 0;
 }
