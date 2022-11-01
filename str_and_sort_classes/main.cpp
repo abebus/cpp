@@ -3,7 +3,7 @@
 
 class String{
     friend std::ostream& operator<<(std::ostream&, const String&);
-    //friend String operator[](String&, String&);
+    friend String& operator+(String);
 
     char *content_{nullptr};
     int size_{0};
@@ -40,9 +40,9 @@ public:
     };
 
     char& operator[](int);
-    String& operator+(String);
-    String& operator+=(String);
-    String& operator=(String);
+    String operator+(String);
+    String operator+=(String);
+    //String& operator=(String);
 
     bool operator==(String);
     bool operator>(String);
@@ -70,6 +70,17 @@ public:
         }
         return res;
     }
+
+    String concatenate(String right){
+        String res = String(' ', this->len() + right.len());
+        for (int i = 0; i < this->len(); i++){
+            res[i] = this->content_[i];
+        }
+        for (int i = this->len(); i < res.len(); i++) {
+            res[i] = right.content_[i - this->len()];
+        }
+        return res;
+    }
 };
 
 std::ostream& operator<<(std::ostream& os, const String& obj)
@@ -85,23 +96,15 @@ char& String::operator[](int index) {
     return content_[index];
 }
 
-String& String::operator+(String right) {
-    String res = String(this->len() + right.len());
-    for (int i = 0; i < this->size_; i++){
-        res[i] = this->content_[i];
-        printf("%c", res[i]);
-    }
-    for (int i = 0; i < right.size_; i++) {
-        res[i] = right.content_[i];
-        printf("%c", res[i]);
-    }
-    return res;
+String String::operator+(String right){
+    return this->concatenate(right);
 }
 
 int main(){
     String teststr("cock", 4);
     String test2("check", 5);
-    String a = teststr + test2;
-    //std::cout << teststr + test2.lower();
+    //String a = teststr + test2;
+    std::cout << teststr.concatenate(test2.lower()) << '\n';
+    //std::cout << test2 + teststr;
     return 0;
 }
