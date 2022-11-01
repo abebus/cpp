@@ -1,5 +1,4 @@
 #include <iostream>
-#include <experimental/random>
 
 class String{
     friend std::ostream& operator<<(std::ostream&, const String&);
@@ -12,11 +11,12 @@ class String{
         this->content_ = new char[size_];
     }
 public:
-    String() {};
+    String() = default;
     explicit String(int size){
         size_ = size;
+        content_ = new char[size];
         for (int i = 0; i < size; i ++){
-            content_[i] = char(std::experimental::randint(32,125));
+            content_[i] = char(33 + int(93*double(rand())/32768));
         }
     };
     String(const char *liter, int size){
@@ -41,7 +41,8 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 }
 
 int main(){
-    String teststr("char", 4);
-    std::cout << teststr;
+    String teststr( 8);
+    String test2(10);
+    std::cout << teststr << test2;
     return 0;
 }
