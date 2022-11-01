@@ -3,15 +3,24 @@
 
 class String{
     friend std::ostream& operator<<(std::ostream&, const String&);
-    //friend String& operator+(String);
 
     char *content_{nullptr};
     int size_{0};
 
-    void resize(){
-        this->size_ = 5;
-        this->content_ = new char[size_];
+    void resize(int newsize){
+        char* temp;
+        temp = new char[size_];
+        int oldsize = size_;
+        for (int i = 0; i < oldsize; i++)
+            temp[i] = content_[i];
+        this->size_ += newsize;
+        this->content_ = new char [size_];
+        for (int i; i < oldsize; i++)
+            content_[i] = temp[i];
+        temp = nullptr;
+        delete[] temp;
     }
+
 public:
     String() = default;
     String(char ch, int size){
@@ -36,11 +45,14 @@ public:
     };
     ~String() {
         content_ = nullptr;
-        delete content_;
+        delete[] content_;
         size_ = 0;
     };
 
-    char& operator[](int);
+    char& operator[](int index) {
+        assert(index < size_);
+        return content_[index];
+    }
 
     String operator+(String right){
         return this->concatenate(right);
@@ -95,10 +107,7 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
     return os;
 }
 
-char& String::operator[](int index) {
-    assert(index < size_);
-    return content_[index];
-}
+
 
 
 int main(){
