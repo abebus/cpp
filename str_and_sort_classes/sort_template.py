@@ -1,5 +1,4 @@
 import abc, random
-from abc import ABC
 
 
 class SortStrategy(abc.ABC):
@@ -35,14 +34,12 @@ class BogoSort(SortStrategy):
 
 
 class Sort:
-    ptr_to_bogosort = BogoSort
-
     def __init__(self):
         return
 
     @staticmethod
-    def set_strategy(strategy):
-        return Sort.ptr_to_bogosort
+    def set_strategy(strategy: SortStrategy.__subclasses__()):
+        return strategy
 
 
 if __name__ == '__main__':
