@@ -74,8 +74,8 @@ public:
     void operator+=(const String &right){
         int oldsize = size_;
         this->resize(this->len()+right.len());
-        for (int i = oldsize; i < this->len(); i++)
-            this->content_[i] = right.content_[i - oldsize];
+        std::copy(right.content_, right.content_ + right.size_, this->content_ + oldsize);
+        //for (int i = oldsize; i < this->len(); i++) this->content_[i] = right.content_[i - oldsize];
     }
     bool operator==(const String &right){
         if (this->len() != right.len())
