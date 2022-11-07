@@ -8,59 +8,59 @@ class String{
     int size_{0};
 
     void resize(int newsize){
-        char* temp;
-        temp = new char[size_];
-        int oldsize = size_;
-        for (int i = 0; i < oldsize; i++)
-            temp[i] = content_[i];
-        this->size_ = newsize;
-        this->content_ = new char [size_];
-        for (int i = 0; i < oldsize; i++)
-            content_[i] = temp[i];
-        temp = nullptr;
-        delete[] temp;
+        if (size_ == newsize)
+            return;
+        char *temp = new char[newsize]{};
+        if (newsize > size_)
+            std::copy(content_, content_ + size_, temp);
+        else
+            std::copy(content_, content_ + newsize, temp);
+        delete[] content_;
+        content_ = temp;
+        size_ = newsize;
     }
 
 public:
     String() = default;
     String(char ch, int size){
-        size_ = size;
-        content_ = new char[size];
-        for (int i = 0; i < size; i++)
-            content_[i] = ch;
+        //size_ = size;
+        //content_ = new char[size];
+        resize(size);
+        std::fill(content_, content_ + size_, ch);
+        //for (int i = 0; i < size; i++)content_[i] = ch;
     }
     explicit String(int size){
-        size_ = size;
-        content_ = new char[size];
-        for (int i = 0; i < size; i ++)
+        //size_ = size;
+        //content_ = new char[size];
+        resize(size);
+        for (int i = 0; i < size; i++)
             content_[i] = char(33 + int(93*double(rand())/32768));
     }
     String(const char *liter, int size){
-        content_ = new char[size];
-        size_ = size;
-        for (int i = 0; i < size; i++)
-            content_[i] = liter[i];
+        resize(size);
+        std::copy(liter, liter + size, content_);
+        //for (int i = 0; i < size; i++) content_[i] = liter[i];
     }
     String(const String &right){
-        size_ = right.len();
-        content_ = new char[size_];
-        for (int i = 0; i < size_; i++)
-            content_[i] = right.content_[i];
+        resize(right.size_);
+        std::copy(right.content_, right.content_ + right.size_, content_);
+        //for (int i = 0; i < size_; i++) content_[i] = right.content_[i];
     }
     ~String() {
-        content_ = nullptr;
         delete[] content_;
+        content_ = nullptr;
         size_ = 0;
     }
 
     String& operator=(const String &right){
-        if (this == &right)
+        /*if (this == &right)
             return *this;
         if (this->len() != right.len())
             this->resize(right.len());
         //std::copy(right.content_, right.content_ + right.size_, this->content_);
         for (int i = 0; i < right.len(); i++)
-            this->content_[i] = right.content_[i];
+            this->content_[i] = right.content_[i];*/
+        new (this) String(right);
         return *this;
     }
 
@@ -72,7 +72,7 @@ public:
         return this->concatenate(right);
     }
     void operator+=(const String &right){
-        int oldsize = this->len();
+        int oldsize = size_;
         this->resize(this->len()+right.len());
         for (int i = oldsize; i < this->len(); i++)
             this->content_[i] = right.content_[i - oldsize];
@@ -106,7 +106,7 @@ public:
         return (this->len() >= right.len());
     };
 
-    int len() const{return size_;}
+    int len() const {return size_;}
 
     String upper(){
         String res = String(this->content_,this->size_);
@@ -151,6 +151,7 @@ int main(){
     std::cout << test2 + teststr << '\n' << (test2 != test2) << ' ' << (teststr < test2) << '\n';
     test2 = String("test", 4);
     String test3 = test2;
+    teststr = String(10);
     String test4;
     test4 = teststr;
     std::cout << test3.upper() << ' ' << test4.lower();

@@ -3,4 +3,4 @@ project(str_and_sort_classes)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(str_and_sort_classes sort.cpp)
+add_executable(str_and_sort_classes str.cpp)
