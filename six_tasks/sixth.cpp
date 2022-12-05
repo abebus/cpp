@@ -62,6 +62,16 @@ public:
 
 };
 
+Matrix readFromFile(char* path){
+    std::ifstream file;
+    std::string line;
+    file.open(path);
+    auto outMat = Matrix();
+    while (std::getline(file, line)){
+
+    }
+}
+
 int main(){
     int a[2]={1, 0};
     int b[2]={0, 1};

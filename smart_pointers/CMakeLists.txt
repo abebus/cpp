@@ -3,4 +3,4 @@ project(std_basics)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(classwork classwork.cpp ../templates/classwork.cpp)
+add_executable(sp smart_pointers.cpp ../smart_pointers/smart_pointers.cpp)
