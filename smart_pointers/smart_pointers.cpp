@@ -81,14 +81,7 @@ public:
     {
         // Implement method
         (*reference)++;
-    }Read
-Discuss
-Practice
-Video
-Courses
-
-Memory in a C/C++/Java program can either be allocated on a stack or a heap.
-Prerequisite: Memory layou
+    }
 
     ~SimpleSharedSmartPointer()
     {
